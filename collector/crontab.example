@@ -1,0 +1,2 @@
+# crontab -e   (Collector EC2, user ec2-user)
+*/5 * * * * ARCHIVE_HOST=10.60.50.x /home/ec2-user/backup_to_archive.sh >> /home/ec2-user/collector_data/logs/cron.log 2>&1

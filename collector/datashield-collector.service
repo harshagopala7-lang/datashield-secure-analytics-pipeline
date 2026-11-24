@@ -1,0 +1,14 @@
+[Unit]
+Description=DataShield Collector Service
+After=network.target
+
+[Service]
+User=ec2-user
+WorkingDirectory=/home/ec2-user
+Environment=ANALYZER_URL=http://10.60.20.250:5001/analyze
+ExecStart=/usr/bin/python3 /home/ec2-user/collector.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

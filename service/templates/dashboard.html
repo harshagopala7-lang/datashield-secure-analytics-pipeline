@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+  >
+  <title>DataShield Security Dashboard</title>
+  <style>
+      *{
+    box-sizing: border-box;
+}
+:root {
+    --navy: #14213d;
+    --navy-light: #1d3557;
+    --blue: #2563eb;
+    --blue-dark: #1d4ed8;
+    --blue-soft: #eff6ff;
+    --green: #16a34a;
+    --green-soft: #dcfce7;
+    --red: #dc2626;
+    --red-soft: #fee2e2;
+    --purple: #7c3aed;
+    --purple-soft: #f3e8ff;
+    --orange: #ea580c;
+    --orange-soft: #fff7ed;
+    --background: #eef3f8;
+    --text: #172033;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --shadow:
+      0 4px 18px rgba(15, 23, 42, 0.07);
+    --shadow-hover:
+      0 10px 28px rgba(15, 23, 42, 0.12);
+}
+html {
+    scroll-behavior: smooth;
+}
+body {
+    margin: 0;
+    font-family:
+      Inter,
+      Arial,
+      Helvetica,
+      sans-serif;
+    background:
+      linear-gradient(
+           135deg,
+           #eef3f8 0%,
+           #f8fafc 100%
+      );
+    color: var(--text);
+    min-height: 100vh;
+}
+/* ========================================
+    PAGE LOAD ANIMATION
+======================================== */
+.animate-in {
+    opacity: 0;
+    transform:
+        translateY(15px);
+    animation:
+        fadeUp
+        0.65s
+        ease
+        forwards;
+}
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform:
+           translateY(0);
+    }
+}
+.delay-1 {
+    animation-delay: 0.08s;
+}
+.delay-2 {
+    animation-delay: 0.16s;
+}
+.delay-3 {
+    animation-delay: 0.24s;
+}
+.delay-4 {
+    animation-delay: 0.32s;
+}
+/* ========================================
+    HEADER
+======================================== */
+header {
+    height: 70px;
+    background:
+      linear-gradient(
+           135deg,
+           #14213d,
+           #1d3557
+      );
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding:
+      0 32px;
+    box-shadow:
+      0 3px 12px
+      rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 10;
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.shield {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      linear-gradient(
+           135deg,
+           #2563eb,
+           #60a5fa
+      );
+    font-size: 22px;
+    box-shadow:
+      0 5px 15px
+      rgba(37,99,235,0.35);
+    animation:
+      shieldFloat
+      3s
+      ease-in-out
+      infinite;
+}
+@keyframes shieldFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-2px);
+    }
+}
+.brand-text h1 {
+    margin: 0;
+    font-size: 21px;
+    letter-spacing: -0.3px;
+}
+.brand-text span {
+    display: block;
+    margin-top: 2px;
+    color: #bfdbfe;
+    font-size: 11px;
+}
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.online-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+.online-dot {
+    width: 9px;
+    height: 9px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 5px
+      rgba(34,197,94,0.15);
+    animation:
+      pulse
+      2s
+      infinite;
+}
+@keyframes pulse {
+    0% {
+        box-shadow:
+           0000
+           rgba(34,197,94,0.35);
+    }
+    70% {
+        box-shadow:
+           0 0 0 7px
+           rgba(34,197,94,0);
+    }
+    100% {
+        box-shadow:
+           0000
+           rgba(34,197,94,0);
+    }
+}
+.date-time {
+    color: #cbd5e1;
+    font-size: 12px;
+    text-align: right;
+}
+/* ========================================
+    MAIN
+======================================== */
+.container {
+    max-width: 1500px;
+    margin: auto;
+    padding:
+      20px 28px 25px;
+}
+/* ========================================
+ UPLOAD / PIPELINE
+======================================== */
+.upload-panel {
+  background:
+    linear-gradient(
+         135deg,
+         #ffffff,
+         #f8fbff
+    );
+  border:
+    1px solid #bfdbfe;
+  border-left:
+    5px solid var(--blue);
+  border-radius: 15px;
+  padding:
+    20px 24px;
+  box-shadow:
+    var(--shadow);
+    display: grid;
+    grid-template-columns:
+      1fr 1.15fr;
+    gap: 25px;
+    margin-bottom: 17px;
+    overflow: hidden;
+    position: relative;
+}
+.upload-panel::after {
+    content: "";
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    right: -100px;
+    top: -140px;
+    background:
+      rgba(37,99,235,0.06);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.upload-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 7px;
+}
+.upload-icon {
+  width: 42px;
+  height: 42px;
+  background: var(--blue-soft);
+  color: var(--blue);
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  animation:
+    iconBounce
+    3s
+    ease-in-out
+        infinite;
+}
+@keyframes iconBounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+.upload-title h2 {
+    margin: 0;
+    font-size: 19px;
+}
+.upload-description {
+    margin:
+      0 0 13px 54px;
+    color: var(--muted);
+    font-size: 13px;
+}
+.upload-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-left: 54px;
+}
+input[type="file"] {
+    max-width: 330px;
+    background: white;
+    border:
+      1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 12px;
+}
+button {
+    border: none;
+    border-radius: 8px;
+    padding:
+      9px 17px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+      transform
+      0.2s ease,
+      box-shadow
+      0.2s ease,
+      background
+      0.2s ease;
+}
+button:hover {
+    transform:
+      translateY(-2px);
+    box-shadow:
+      0 6px 14px
+      rgba(37,99,235,0.18);
+}
+button:active {
+    transform:
+      translateY(0);
+}
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+.primary-button {
+    background:
+      linear-gradient(
+           135deg,
+           #2563eb,
+           #1d4ed8
+      );
+    color: white;
+}
+.secondary-button {
+    background: #eef3fa;
+    color: var(--navy);
+}
+#uploadStatus {
+    margin:
+      10px 0 0 54px;
+    min-height: 18px;
+    font-size: 12px;
+}
+.success-text {
+    color: var(--green);
+    font-weight: 700;
+}
+.error-text {
+    color: var(--red);
+    font-weight: 700;
+}
+.info-text {
+    color: var(--muted);
+}
+/* ========================================
+    PIPELINE VISUAL
+======================================== */
+.pipeline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    position: relative;
+    z-index: 2;
+}
+.pipeline-node {
+    min-width: 70px;
+    text-align: center;
+    animation:
+      pipelineAppear
+      0.7s
+      ease
+      forwards;
+    opacity: 0;
+    transform:
+      scale(0.85);
+}
+.pipeline-node:nth-child(1) {
+    animation-delay: 0.15s;
+}
+.pipeline-node:nth-child(3) {
+    animation-delay: 0.25s;
+}
+.pipeline-node:nth-child(5) {
+    animation-delay: 0.35s;
+}
+.pipeline-node:nth-child(7) {
+    animation-delay: 0.45s;
+}
+.pipeline-node:nth-child(9) {
+    animation-delay: 0.55s;
+}
+.pipeline-node:nth-child(11) {
+    animation-delay: 0.65s;
+}
+.pipeline-node:nth-child(13) {
+    animation-delay: 0.75s;
+}
+.pipeline-node:nth-child(15) {
+    animation-delay: 0.85s;
+}
+@keyframes pipelineAppear {
+    to {
+        opacity: 1;
+        transform:
+           scale(1);
+    }
+}
+.pipeline-icon {
+    width: 38px;
+    height: 38px;
+    margin:
+        auto auto 5px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 700;
+    box-shadow:
+      0 3px 9px
+      rgba(15,23,42,0.08);
+}
+.pipeline-node:nth-child(1)
+.pipeline-icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+.pipeline-node:nth-child(3)
+.pipeline-icon {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+.pipeline-node:nth-child(5)
+.pipeline-icon {
+    background: #e0f2fe;
+    color: #0284c7;
+}
+.pipeline-node:nth-child(7)
+.pipeline-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+.pipeline-node:nth-child(9)
+.pipeline-icon {
+    background: #fef3c7;
+    color: #d97706;
+}
+.pipeline-node:nth-child(11)
+.pipeline-icon {
+    background: #f1f5f9;
+    color: #475569;
+}
+.pipeline-node:nth-child(13)
+.pipeline-icon {
+    background: #f3e8ff;
+    color: #9333ea;
+}
+.pipeline-node:nth-child(15)
+.pipeline-icon {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+.pipeline-name {
+    font-size: 9px;
+    font-weight: 700;
+    color: #475569;
+    white-space: nowrap;
+}
+.pipeline-arrow {
+    color: #94a3b8;
+    font-size: 16px;
+    animation:
+        arrowPulse
+        1.8s
+        ease-in-out
+        infinite;
+}
+@keyframes arrowPulse {
+    0%,
+    100% {
+        opacity: 0.35;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+.pipeline-caption {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 8px;
+}
+/* ========================================
+    METRIC CARDS
+======================================== */
+.cards {
+    display: grid;
+    grid-template-columns:
+      repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 17px;
+}
+.metric-card {
+  background: white;
+  border:
+    1px solid var(--border);
+  border-radius: 13px;
+  padding:
+    16px 18px;
+  box-shadow:
+    var(--shadow);
+  min-height: 105px;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform
+      0.25s ease,
+      box-shadow
+      0.25s ease;
+}
+.metric-card:hover {
+    transform:
+      translateY(-4px);
+    box-shadow:
+      var(--shadow-hover);
+}
+.metric-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background:
+      var(--blue);
+}
+.metric-card:nth-child(1)::before {
+    background: var(--green);
+}
+.metric-card:nth-child(2)::before {
+    background: var(--blue);
+}
+.metric-card:nth-child(3)::before {
+    background: var(--orange);
+}
+.metric-card:nth-child(4)::before {
+    background: var(--purple);
+}
+.metric-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.metric-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+.metric-card:nth-child(1)
+.metric-icon {
+    background: var(--green-soft);
+    color: var(--green);
+}
+.metric-card:nth-child(2)
+.metric-icon {
+    background: var(--blue-soft);
+    color: var(--blue);
+}
+.metric-card:nth-child(3)
+.metric-icon {
+    background: var(--orange-soft);
+    color: var(--orange);
+}
+.metric-card:nth-child(4)
+.metric-icon {
+    background: var(--purple-soft);
+    color: var(--purple);
+}
+.metric-title {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 7px;
+}
+.metric-value {
+    font-size: 21px;
+    font-weight: 800;
+    margin-top: 5px;
+    word-break: break-word;
+    animation:
+      valueAppear
+      0.7s
+      ease;
+}
+@keyframes valueAppear {
+    from {
+        opacity: 0;
+        transform:
+           translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform:
+           translateY(0);
+    }
+}
+.green-value {
+    color: var(--green);
+}
+/* ========================================
+    TABLE
+======================================== */
+.table-card {
+    background: white;
+    border:
+      1px solid var(--border);
+    border-radius: 13px;
+    box-shadow:
+      var(--shadow);
+    overflow: hidden;
+    animation:
+      fadeUp
+      0.65s
+      0.35s
+      ease
+      both;
+}
+.table-header {
+    padding:
+      13px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom:
+      1px solid var(--border);
+}
+.table-title h2 {
+    margin: 0;
+    font-size: 17px;
+}
+.table-title p {
+    margin:
+      3px 0 0;
+    font-size: 11px;
+    color: var(--muted);
+}
+.table-actions {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+.last-updated {
+    color: var(--muted);
+    font-size: 11px;
+}
+.table-container {
+    overflow-x: auto;
+}
+table {
+    width: 100%;
+    border-collapse:
+       collapse;
+    font-size: 12px;
+}
+th {
+    background:
+       linear-gradient(
+            135deg,
+            #14213d,
+            #1d3557
+       );
+    color: white;
+    padding:
+       10px 12px;
+    text-align: left;
+    white-space: nowrap;
+}
+td {
+    padding:
+       9px 12px;
+    border-bottom:
+       1px solid #edf1f5;
+    white-space: nowrap;
+}
+tbody tr {
+    animation:
+      rowAppear
+      0.45s
+      ease
+      both;
+    transition:
+      background
+      0.2s ease;
+}
+tbody tr:nth-child(1) {
+    animation-delay: 0.05s;
+}
+tbody tr:nth-child(2) {
+    animation-delay: 0.10s;
+}
+tbody tr:nth-child(3) {
+    animation-delay: 0.15s;
+}
+tbody tr:nth-child(4) {
+    animation-delay: 0.20s;
+}
+tbody tr:nth-child(5) {
+    animation-delay: 0.25s;
+}
+tbody tr:nth-child(6) {
+    animation-delay: 0.30s;
+}
+tbody tr:nth-child(7) {
+    animation-delay: 0.35s;
+}
+tbody tr:nth-child(8) {
+    animation-delay: 0.40s;
+}
+tbody tr:nth-child(9) {
+    animation-delay: 0.45s;
+}
+tbody tr:nth-child(10) {
+    animation-delay: 0.50s;
+}
+@keyframes rowAppear {
+    from {
+        opacity: 0;
+        transform:
+           translateX(-8px);
+    }
+    to {
+        opacity: 1;
+        transform:
+           translateX(0);
+    }
+}
+tbody tr:hover {
+    background: #f8fbff;
+}
+.status-badge {
+    display: inline-block;
+    padding:
+      4px 9px;
+    border-radius:
+      20px;
+    font-size: 10px;
+    font-weight: 800;
+}
+.badge-processed {
+    background:
+      var(--green-soft);
+    color:
+      #166534;
+}
+.badge-threat {
+    background:
+      var(--red-soft);
+    color:
+      #991b1b;
+}
+.badge-other {
+    background:
+      #e2e8f0;
+    color:
+      #475569;
+}
+.table-footer {
+    padding:
+      8px 18px;
+    color:
+      var(--muted);
+    font-size: 10px;
+    border-top:
+      1px solid var(--border);
+}
+/* ========================================
+    LOADING
+======================================== */
+.loading {
+    position: relative;
+    color: transparent !important;
+    overflow: hidden;
+}
+.loading::after {
+    content: "";
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    top: 50%;
+    height: 10px;
+    transform:
+      translateY(-50%);
+    border-radius: 10px;
+    background:
+      linear-gradient(
+           90deg,
+           #e2e8f0 25%,
+           #f8fafc 50%,
+           #e2e8f0 75%
+      );
+    background-size:
+      200% 100%;
+    animation:
+      shimmer
+      1.3s
+      infinite;
+}
+@keyframes shimmer {
+    0% {
+      background-position:
+          200% 0;
+    }
+    100% {
+        background-position:
+          -200% 0;
+    }
+}
+/* ========================================
+    RESPONSIVE
+======================================== */
+@media (max-width: 1150px) {
+    .upload-panel {
+        grid-template-columns:
+          1fr;
+    }
+    .pipeline {
+        margin-top: 5px;
+    }
+    .cards {
+        grid-template-columns:
+          repeat(2, 1fr);
+    }
+}
+@media (max-width: 700px) {
+    header {
+        height: auto;
+        padding:
+          14px 18px;
+    }
+    .date-time {
+        display: none;
+    }
+.container {
+    padding:
+      14px;
+}
+.cards {
+    grid-template-columns:
+      1fr;
+}
+.upload-row {
+    margin-left: 0;
+}
+.upload-description,
+#uploadStatus {
+    margin-left: 0;
+}
+.pipeline {
+           overflow-x: auto;
+           justify-content:
+             flex-start;
+           padding-bottom: 5px;
+       }
+       .table-header {
+           align-items:
+             flex-start;
+           gap: 10px;
+           flex-direction:
+             column;
+       }
+   }
+ </style>
+</head>
+<body>
+<header>
+ <div class="brand">
+   <div class="shield">
+     🛡
+   </div>
+   <div class="brand-text">
+     <h1>
+          DataShield
+     </h1>
+     <span>
+          Security Monitoring & Analysis
+     </span>
+   </div>
+ </div>
+  <div class="header-right">
+    <div class="online-status">
+        <span class="online-dot"></span>
+        Service Online
+    </div>
+    <div
+        class="date-time"
+        id="dateTime"
+    >
+        Loading...
+    </div>
+  </div>
+</header>
+<div class="container">
+  <!-- =====================================
+      UPLOAD + PIPELINE
+  ====================================== -->
+  <section
+      class="upload-panel animate-in"
+  >
+      <div>
+        <div class="upload-title">
+          <div class="upload-icon">
+              ↑
+          </div>
+          <h2>
+              Upload Security Data
+          </h2>
+        </div>
+<p class="upload-description">
+  Select a JSON file and send it through
+  the complete DataShield processing pipeline.
+</p>
+<div class="upload-row">
+  <input
+      type="file"
+      id="jsonFile"
+      accept=".json,application/json"
+  >
+  <button
+      class="primary-button"
+      id="sendBtn"
+      onclick="sendJsonFile()"
+  >
+         ➤ Send to Pipeline
+      </button>
+  </div>
+  <div
+      id="uploadStatus"
+      class="info-text"
+  >
+      Supported format: JSON (.json) |
+      Required fields: device_id, value
+  </div>
+</div>
+<!-- PIPELINE -->
+<div>
+  <div class="pipeline">
+<div class="pipeline-node">
+  <div class="pipeline-icon">
+    ☁
+  </div>
+  <div class="pipeline-name">
+    CloudFront
+  </div>
+</div>
+<div class="pipeline-arrow">
+  →
+</div>
+<div class="pipeline-node">
+  <div class="pipeline-icon">
+    ⇥
+  </div>
+  <div class="pipeline-name">
+    API Gateway
+  </div>
+</div>
+<div class="pipeline-arrow">
+  →
+</div>
+<div class="pipeline-node">
+  <div class="pipeline-icon">
+    ⚖
+  </div>
+  <div class="pipeline-name">
+    ALB
+  </div>
+</div>
+<div class="pipeline-arrow">
+  →
+</div>
+<div class="pipeline-node">
+  <div class="pipeline-icon">
+    ↓
+  </div>
+  <div class="pipeline-name">
+    Collector
+  </div>
+</div>
+<div class="pipeline-arrow">
+  →
+</div>
+<div class="pipeline-node">
+  <div class="pipeline-icon">
+    ◈
+  </div>
+  <div class="pipeline-name">
+    Analyzer
+  </div>
+</div>
+<div class="pipeline-arrow">
+  →
+</div>
+<div class="pipeline-node">
+  <div class="pipeline-icon">
+    ▣
+  </div>
+  <div class="pipeline-name">
+    S3
+  </div>
+</div>
+<div class="pipeline-arrow">
+  →
+</div>
+<div class="pipeline-node">
+  <div class="pipeline-icon">
+    λ
+  </div>
+  <div class="pipeline-name">
+    Lambda
+  </div>
+</div>
+<div class="pipeline-arrow">
+  →
+</div>
+    <div class="pipeline-node">
+         <div class="pipeline-icon">
+           ▤
+         </div>
+         <div class="pipeline-name">
+           RDS
+         </div>
+    </div>
+  </div>
+  <div class="pipeline-caption">
+    Data flows through the complete
+    DataShield security pipeline
+  </div>
+</div>
+</section>
+<!-- =====================================
+  METRIC CARDS
+====================================== -->
+<section class="cards">
+  <div
+      class="metric-card animate-in delay-1"
+  >
+      <div class="metric-top">
+         <div class="metric-title">
+           System Status
+         </div>
+         <div class="metric-icon">
+           ✓
+         </div>
+    </div>
+    <div
+        id="status"
+        class="metric-value green-value"
+    >
+        Loading...
+    </div>
+</div>
+<div
+    class="metric-card animate-in delay-2"
+>
+    <div class="metric-top">
+        <div class="metric-title">
+           Device ID
+        </div>
+        <div class="metric-icon">
+            ◉
+        </div>
+    </div>
+    <div
+        id="deviceId"
+        class="metric-value"
+    >
+        -
+    </div>
+</div>
+<div
+    class="metric-card animate-in delay-3"
+>
+    <div class="metric-top">
+        <div class="metric-title">
+            Input Value
+        </div>
+        <div class="metric-icon">
+            ◫
+        </div>
+    </div>
+    <div
+        id="inputValue"
+        class="metric-value"
+    >
+        -
+    </div>
+</div>
+<div
+    class="metric-card animate-in delay-4"
+>
+    <div class="metric-top">
+        <div class="metric-title">
+            Processed Value
+        </div>
+        <div class="metric-icon">
+            ⚙
+        </div>
+    </div>
+    <div
+        id="processedValue"
+        class="metric-value"
+    >
+        -
+    </div>
+  </div>
+</section>
+<!-- =====================================
+  RECENT ANALYSIS
+====================================== -->
+<section class="table-card">
+  <div class="table-header">
+    <div class="table-title">
+      <h2>
+        Recent Security Analysis
+      </h2>
+      <p>
+        Latest processed security results
+        from DataShield devices
+      </p>
+    </div>
+  <div class="table-actions">
+    <span
+         id="lastUpdated"
+         class="last-updated"
+    >
+         -
+    </span>
+    <button
+         class="secondary-button"
+         onclick="loadData()"
+    >
+         ↻ Refresh
+    </button>
+  </div>
+</div>
+<div class="table-container">
+<table>
+  <thead>
+    <tr>
+      <th>
+           ID
+      </th>
+      <th>
+           Analysis Time
+      </th>
+      <th>
+           Device ID
+      </th>
+      <th>
+           Input
+      </th>
+      <th>
+           Processed
+      </th>
+             <th>
+               Status
+             </th>
+             <th>
+               Result
+             </th>
+           </tr>
+       </thead>
+       <tbody
+           id="tableBody"
+       >
+       </tbody>
+  </table>
+</div>
+<div
+         class="table-footer"
+         id="recordCount"
+    >
+         Loading records...
+    </div>
+  </section>
+</div>
+<script>
+/* ========================================
+ CLOUDFRONT PIPELINE
+======================================== */
+const PIPELINE_URL =
+  "https://d1tpzuo51256gb.cloudfront.net/collect";
+/* ========================================
+ DATE / TIME
+======================================== */
+function updateDateTime() {
+  const now =
+    new Date();
+  document.getElementById(
+    "dateTime"
+  ).innerHTML =
+    now.toLocaleDateString(
+        undefined,
+        {
+            weekday: "short",
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    )
+    +
+    "<br>"
+    +
+       now.toLocaleTimeString();
+}
+updateDateTime();
+setInterval(
+     updateDateTime,
+     30000
+);
+/* ========================================
+     STATUS COLORS
+======================================== */
+function getStatusClass(status) {
+     const value =
+       String(status || "")
+       .toLowerCase();
+    if (
+         value === "processed" ||
+         value === "safe"
+    ){
+         return "green-value";
+    }
+    if (
+         value === "threat detected" ||
+         value === "error"
+    ){
+         return "";
+    }
+    return "";
+}
+function getBadgeClass(status) {
+    const value =
+         String(status || "")
+         .toLowerCase();
+    if (
+         value === "processed" ||
+         value === "safe"
+    ){
+         return "badge-processed";
+    }
+    if (
+         value === "threat detected" ||
+         value === "error"
+    ){
+         return "badge-threat";
+    }
+    return "badge-other";
+}
+/* ========================================
+ LOAD RDS DATA
+======================================== */
+async function loadData() {
+  const statusElement =
+    document.getElementById(
+          "status"
+    );
+  try {
+    statusElement.textContent =
+          "Loading...";
+    const response =
+          await fetch(
+               "/security-analysis/latest"
+          );
+const result =
+     await response.json();
+if (
+     !response.ok ||
+     result.status !== "success"
+){
+     throw new Error(
+          result.message ||
+          "Unable to load data"
+     );
+}
+const data =
+     result.data || [];
+if (
+     data.length === 0
+){
+     statusElement.textContent =
+          "No Data";
+     return;
+}
+const latest =
+     data[0];
+/* SUMMARY CARDS */
+statusElement.textContent =
+     latest.status || "-";
+statusElement.className =
+     "metric-value " +
+     getStatusClass(
+          latest.status
+     );
+document.getElementById(
+  "deviceId"
+).textContent =
+  latest.device_id || "-";
+document.getElementById(
+  "inputValue"
+).textContent =
+  latest.input_value ?? "-";
+document.getElementById(
+  "processedValue"
+).textContent =
+  latest.processed_value ?? "-";
+/* TABLE */
+const tableBody =
+  document.getElementById(
+    "tableBody"
+  );
+tableBody.innerHTML = "";
+data.forEach(
+  (record) => {
+       const row =
+         document.createElement(
+              "tr"
+         );
+       row.innerHTML = `
+         <td>
+              ${record.id ?? "-"}
+         </td>
+         <td>
+              ${record.analysis_time ?? "-"}
+         </td>
+<td>
+  ${record.device_id ?? "-"}
+</td>
+<td>
+  ${record.input_value ?? "-"}
+</td>
+<td>
+  ${record.processed_value ?? "-"}
+</td>
+<td>
+  <span
+       class="status-badge
+       ${getBadgeClass(record.status)}"
+  >
+       ${record.status ?? "-"}
+  </span>
+</td>
+              <td>
+                ${record.result ?? "-"}
+              </td>
+         `;
+         tableBody.appendChild(
+              row
+         );
+     }
+);
+document.getElementById(
+     "lastUpdated"
+).textContent =
+     "Updated " +
+     new Date()
+     .toLocaleTimeString();
+document.getElementById(
+         "recordCount"
+    ).textContent =
+         "Showing " +
+         data.length +
+         " recent records";
+}
+catch (error) {
+    console.error(
+         "Dashboard error:",
+         error
+    );
+    statusElement.textContent =
+         "Connection Error";
+    statusElement.className =
+         "metric-value";
+}
+}
+/* ========================================
+    JSON FILE UPLOAD
+======================================== */
+async function sendJsonFile() {
+    const fileInput =
+      document.getElementById(
+           "jsonFile"
+      );
+    const statusElement =
+      document.getElementById(
+           "uploadStatus"
+      );
+    const button =
+      document.getElementById(
+          "sendBtn"
+     );
+if (
+     !fileInput.files.length
+){
+     statusElement.textContent =
+          "Please select a JSON file first.";
+     statusElement.className =
+          "error-text";
+     return;
+}
+const file =
+     fileInput.files[0];
+try {
+button.disabled =
+  true;
+button.textContent =
+  "⟳ Processing...";
+statusElement.textContent =
+  "Reading JSON file...";
+statusElement.className =
+  "info-text";
+const text =
+  await file.text();
+const data =
+  JSON.parse(
+       text
+  );
+if (
+     !data.device_id
+){
+     throw new Error(
+          "JSON must contain device_id."
+     );
+}
+if (
+     data.value === undefined ||
+     data.value === null
+){
+     throw new Error(
+          "JSON must contain value."
+     );
+}
+statusElement.textContent =
+     "Sending through CloudFront...";
+const response =
+  await fetch(
+       PIPELINE_URL,
+       {
+           method: "POST",
+           headers: {
+                "Content-Type":
+                    "application/json"
+           },
+           body:
+                JSON.stringify(
+                    data
+                )
+       }
+  );
+const responseText =
+    await response.text();
+let result;
+try {
+    result =
+         JSON.parse(
+              responseText
+         );
+}
+catch {
+    result = {
+         message:
+              responseText
+    };
+}
+if (
+     !response.ok
+){
+     throw new Error(
+          result.message ||
+          result.error ||
+          `HTTP ${response.status}`
+     );
+}
+statusElement.textContent =
+     "✓ Successfully submitted to DataShield pipeline.";
+statusElement.className =
+     "success-text";
+button.textContent =
+     "✓ Submitted";
+/*
+* Pipeline is asynchronous:
+*
+* Collector
+*      ↓
+* Analyzer
+*      ↓
+* S3
+*      ↓
+* Lambda
+*      ↓
+* RDS
+*
+* Wait briefly before refreshing.
+*/
+setTimeout(
+     loadData,
+     5000
+);
+    setTimeout(
+         () => {
+              button.textContent =
+                "➤ Send to Pipeline";
+              button.disabled =
+                false;
+         },
+         2500
+    );
+}
+catch (error) {
+    console.error(
+         error
+    );
+    statusElement.textContent =
+          "Upload failed: " +
+          error.message;
+        statusElement.className =
+          "error-text";
+        button.textContent =
+          "➤ Send to Pipeline";
+        button.disabled =
+          false;
+    }
+}
+/* ========================================
+    INITIAL LOAD
+======================================== */
+loadData();
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Secrets
+.env
+*.env
+!.env.example
+*.pem
+*.key
+*.passphrase
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Lambda build output
+lambda/package/
+lambda/*.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,15 @@
+[Unit]
+Description=DataShield Analyzer Service
+After=network.target
+
+[Service]
+User=ec2-user
+WorkingDirectory=/home/ec2-user
+Environment=S3_BUCKET=datashield-processed-2026
+Environment=AWS_REGION=ap-southeast-2
+ExecStart=/usr/bin/python3 /home/ec2-user/analyzer_server.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

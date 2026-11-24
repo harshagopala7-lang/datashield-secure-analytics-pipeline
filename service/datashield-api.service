@@ -1,0 +1,14 @@
+[Unit]
+Description=DataShield Flask API Service
+After=network.target
+
+[Service]
+User=ec2-user
+WorkingDirectory=/home/ec2-user
+EnvironmentFile=/etc/datashield/service.env
+ExecStart=/usr/bin/python3 /home/ec2-user/app.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
